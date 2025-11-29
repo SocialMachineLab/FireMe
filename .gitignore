@@ -1,0 +1,65 @@
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django / Python specific
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.env
+.venv
+venv/
+ENV/
+
+# dotenv environment files
+.env
+*.env
+
+# Database (PostgreSQL credentials are in .env, so don’t commit dumps)
+*.sql
+*.dump
+
+# Media / Static (if collected locally)
+media/
+staticfiles/
+static/
+
+# Django migrations cache (keep actual migrations, ignore pycache)
+*/migrations/__pycache__/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Unit test / coverage reports
+.coverage
+*.cover
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter / notebooks
+.ipynb_checkpoints
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Migrations
+migrations
