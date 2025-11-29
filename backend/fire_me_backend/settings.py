@@ -26,12 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+krss3q947o8t9gcyao8dbz!a3nxedy5d8wti()a6^_p8=)8ou'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY") or 'django-insecure-+krss3q947o8t9gcyao8dbz!a3nxedy5d8wti()a6^_p8=)8ou'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = [h.strip() for h in hosts if h.strip()]
 
 # Defining the default custom user for our project
 AUTH_USER_MODEL = 'accounts.FireMeUser'
@@ -181,3 +182,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
