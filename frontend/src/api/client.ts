@@ -9,8 +9,8 @@ declare module "axios" {
         _retry?: boolean;
     }
 }
-
-const API_BASE = process.env.APP_API_URL || "http://127.0.0.1:8000/";
+console.log("API BASE URL:", process.env.REACT_APP_API_URL);
+const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/";
 
 const client = axios.create({
     baseURL: API_BASE,

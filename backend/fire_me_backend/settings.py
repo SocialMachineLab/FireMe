@@ -75,10 +75,12 @@ MIDDLEWARE = [
 
 CORS_MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware']
 
-MIDDLEWARE += CORS_MIDDLEWARE
+MIDDLEWARE = CORS_MIDDLEWARE + MIDDLEWARE
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:4000',
+    'http://192.168.1.119:4000',
     'http://localhost:3000',
     'http://10.28.64.210:3000',
     'http://10.0.0.36:3000'
