@@ -1,5 +1,5 @@
 services:
-
+  # PostgreSQL Database Service
   pgsql_db:
     image: postgres:17
     container_name: fireme-db
@@ -18,7 +18,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+  # Django Backend Service
   backend:
     build:
       context: ./backend
@@ -33,8 +33,11 @@ services:
     depends_on:
       pgsql_db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
+  # React Frontend Service
   frontend:
     build:
       context: ./frontend
@@ -49,6 +52,45 @@ services:
     depends_on:
       backend:
         condition: service_started
+
+  # RabbitMQ Task Broker Service
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: fireme-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5672:5672" #Broker
+      - "15672:15672"  #management UI
+
+  # Celery Worker Service
+  celery_worker:
+    build: ./backend
+    container_name: fireme-celery-worker
+    command: celery -A fire_me_backend worker --loglevel=INFO
+    depends_on:
+      - backend
+      - rabbitmq
+      - pgsql_db
+    env_file:
+      - ./backend/.env
+
+  celery_beat:
+    build: ./backend
+    container_name: fireme-celery-beat
+    command: celery -A fire_me_backend beat --loglevel=INFO
+    depends_on:
+      - backend
+      - pgsql_db
+      - rabbitmq
+    env_file:
+      - ./backend/.env
 
 volumes:
   fireme_pgdata:

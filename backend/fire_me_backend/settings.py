@@ -185,3 +185,24 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
+
+# CELERY RELEATED SETTINGS
+from celery.schedules import crontab
+
+# RabbitMQ broker
+CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
+
+# For now, use RPC backend (fine for dev); you can change later.
+CELERY_RESULT_BACKEND = "rpc://"
+
+CELERY_TIMEZONE = "Australia/Sydney"
+CELERY_ENABLE_UTC = True
+
+CELERY_TASK_ALWAYS_EAGER = False  # Make sure tasks run via worker, not in-process
+
+CELERY_BEAT_SCHEDULE = {
+    "heartbeat-every-30-seconds": {
+        "task": "core.tasks.heartbeat",
+        "schedule": 30.0,  # seconds
+    },
+}
