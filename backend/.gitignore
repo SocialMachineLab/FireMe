@@ -62,4 +62,4 @@ htmlcov/
 Thumbs.db
 
 # Migrations
-migrations
+# migrations
